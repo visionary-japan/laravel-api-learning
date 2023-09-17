@@ -42,4 +42,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function loans(): hasMany
+    {
+      return $this->hasMany('\App\Models\loans');
+    }
+
+    public function reviews(): hasMany
+    {
+      return $this->hasMany('\App\Models\reviews');
+    }
+
 }
