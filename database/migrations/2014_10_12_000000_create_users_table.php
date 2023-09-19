@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('username')->unique()->nullable(false)->max(255)->comment('ユーザー名');
+            $table->string('user_name')->unique()->nullable(false)->max(255)->comment('ユーザー名');
             $table->string('email')->unique()->max(255)->comment('メールアドレス');
             $table->timestamps();
         });
