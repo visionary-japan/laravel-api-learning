@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Reviews;
+use App\Models\Review;
 use Illuminate\Http\Request;
 
 class ReviewsController extends Controller
