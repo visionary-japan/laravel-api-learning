@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Book;
 
-class Reviews extends Model
+class Review extends Model
 {
     use HasFactory;
 

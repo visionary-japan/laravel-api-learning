@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Book;
 
-class Loans extends Model
+class Loan extends Model
 {
     use HasFactory;
 
