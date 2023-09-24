@@ -15,7 +15,7 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->text('title')->nullable(false)->max(255)->comment('タイトル');
             $table->text('author')->nullable(false)->max(255)->comment('著者');
-            $table->integer('isbn')->unique()->max(13)->comment('ISBN番号');
+            $table->bigInteger('isbn')->unique()->max(13)->comment('ISBN番号');
             $table->date('published_date')->comment('公開日');
             $table->text('summary')->comment('概要');
             $table->timestamps();
