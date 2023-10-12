@@ -27,4 +27,24 @@ class StoreRequest extends FormRequest
             'isbn' => 'max:13',
         ];
     }
+
+    public function attributes()
+    {
+        return [
+            'title' => 'タイトル',
+            'author' => '著者',
+            'isbn' => 'isbn番号',
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.required' => ':attributeは必須項目です',
+            'author.required' => ':attributeは必須項目です',
+            'title.max' => ':attributeは255文字以内で入力してください',
+            'author.max' => ':attributeは255文字以内で入力してください',
+            'isbn.max' => ':attributeは13文字以内で入力してください',
+        ];
+    }
 }
