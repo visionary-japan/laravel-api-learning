@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SampleController;
@@ -21,3 +22,8 @@ use App\Http\Controllers\SampleController;
 
 // サンプルAPI
 Route::get('/sample', [SampleController::class, 'index']);
+
+Route::resource('book', BookController::class)->except([
+    'create', 'edit'
+]);
+

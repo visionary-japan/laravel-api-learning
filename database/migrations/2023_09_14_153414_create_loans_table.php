@@ -13,12 +13,11 @@ return new class extends Migration
     {
         Schema::create('loans', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('book_id')->nullable(false)->comment('本ID');
             $table->unsignedBigInteger('user_id')->nullable(false)->comment('ユーザーID');
             $table->date('loan_date')->nullable(false)->comment('貸出日');
             $table->date('return_date')->comment('返却日');
             $table->date('due_date')->nullable(false)->comment('返却期日');
-            $table->foreign('book_id')->references('id')->on('books');
+            $table->foreignId('book_id')->constrained()->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
