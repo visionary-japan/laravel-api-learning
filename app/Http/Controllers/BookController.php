@@ -39,8 +39,10 @@ class BookController extends Controller
            }
 
         } catch(\Exception $e) {
-            Log::error(json_encode($book, JSON_UNESCAPED_UNICODE));
+
+            Log::error(json_encode($e, JSON_UNESCAPED_UNICODE));
             return response()->json(["message"=>[$e->getMessage()]]);
+
         }
 
     }
@@ -76,7 +78,7 @@ class BookController extends Controller
             }
 
         } catch(\Exception $e) {
-            Log::error(json_encode($book, JSON_UNESCAPED_UNICODE));
+            Log::error(json_encode($e, JSON_UNESCAPED_UNICODE));
             return response()->json(["message"=>[$e->getMessage()]]);
         }
 
