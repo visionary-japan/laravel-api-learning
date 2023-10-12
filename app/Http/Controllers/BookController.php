@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Http\Requests\StoreRequest;
+use App\Http\Requests\UpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+
 
 class BookController extends Controller
 {
@@ -20,7 +23,7 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
 
         try {
@@ -36,6 +39,7 @@ class BookController extends Controller
            }
 
         } catch(\Exception $e) {
+            Log::error(json_encode($book, JSON_UNESCAPED_UNICODE));
             return response()->json(["message"=>[$e->getMessage()]]);
         }
 
@@ -52,7 +56,7 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Book $book)
+    public function update(UpdateRequest $request, Book $book)
     {
         $book->fill($request->all())->save();
         Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
@@ -72,6 +76,7 @@ class BookController extends Controller
             }
 
         } catch(\Exception $e) {
+            Log::error(json_encode($book, JSON_UNESCAPED_UNICODE));
             return response()->json(["message"=>[$e->getMessage()]]);
         }
 
