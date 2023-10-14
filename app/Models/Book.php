@@ -12,7 +12,16 @@ use App\Models\Review;
 
 class Book extends Model
 {
+
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'author',
+        'isbn',
+        'published_date',
+        'summary',
+    ];
 
     public function loans(): hasOne
     {
