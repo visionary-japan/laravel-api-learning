@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Http\Requests\StoreRequest;
 use App\Http\Requests\UpdateRequest;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -40,7 +41,7 @@ class BookController extends Controller
 
         } catch(\Exception $e) {
 
-            Log::error(json_encode($e, JSON_UNESCAPED_UNICODE));
+            Log::error($e);
             return response()->json(["message"=>[$e->getMessage()]]);
 
         }
@@ -72,14 +73,15 @@ class BookController extends Controller
         try {
 
             Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
-
             if($book->delete()){
                 return response()->json(["message"=>"削除しました。"], 200);
             }
 
         } catch(\Exception $e) {
-            Log::error(json_encode($e, JSON_UNESCAPED_UNICODE));
+
+            Log::error($e);
             return response()->json(["message"=>[$e->getMessage()]]);
+
         }
 
     }
