@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable(false)->comment('ユーザーID');
             $table->integer('rating')->nullable(false)->min(1)->max(5)->comment('評価');
             $table->text('comment')->nullable(true)->comment('コメント');
             $table->foreignId('book_id')->constrained()->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }
