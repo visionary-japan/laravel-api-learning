@@ -14,6 +14,14 @@ class Loan extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'book_id',
+        'user_id',
+        'loan_date',
+        'return_date',
+        'due_date',
+    ];
+
     public function users(): belongsTo
     {
         return $this->belongsTo('User');

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\LoansController;
+use App\Http\Controllers\ReviewsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SampleController;
@@ -24,6 +26,14 @@ use App\Http\Controllers\SampleController;
 Route::get('/sample', [SampleController::class, 'index']);
 
 Route::resource('book', BookController::class)->except([
+    'create', 'edit'
+]);
+
+Route::resource('loan', LoansController::class)->except([
+    'create', 'edit'
+]);
+
+Route::resource('review', ReviewsController::class)->except([
     'create', 'edit'
 ]);
 

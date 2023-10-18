@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Review;
 use Illuminate\Http\Request;
+use App\Http\Requests\ReviewRequest;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class ReviewsController extends Controller
 {
@@ -12,54 +15,72 @@ class ReviewsController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $reviewList = Review::all();
+        return response()->json($reviewList, 200);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ReviewRequest $request)
     {
-        //
+
+        try {
+
+            Log::info($request->all());
+            $review = new Review();
+            // 一気に全部のカラムをセット
+            $review->fill($request->all());
+
+            Log::info(json_encode($review, JSON_UNESCAPED_UNICODE));
+
+           if($review->save()){
+                return response()->json(["message"=>"登録しました。"], 200);
+           }
+
+        } catch(\Exception $e) {
+
+            Log::error($e);
+            return response()->json(["message"=>[$e->getMessage()]]);
+
+        }
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Reviews $reviews)
+    public function show(Review $reviews)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Reviews $reviews)
-    {
-        //
+        return response()->json($reviews, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Reviews $reviews)
+    public function update(ReviewRequest $request, Review $reviews)
     {
-        //
+        $reviews->fill($request->all())->save();
+        Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Reviews $reviews)
+    public function destroy(Review $reviews)
     {
-        //
+        try {
+
+            Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
+            if($reviews->delete()){
+                return response()->json(["message"=>"削除しました。"], 200);
+            }
+
+        } catch(\Exception $e) {
+
+            Log::error($e);
+            return response()->json(["message"=>[$e->getMessage()]]);
+
+        }
     }
 }
