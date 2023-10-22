@@ -13,6 +13,13 @@ class Review extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'rating',
+        'comment',
+        'book_id',
+    ];
+
     public function users(): belongsTo
     {
         return $this->belongsTo('User');
