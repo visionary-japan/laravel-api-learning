@@ -60,8 +60,18 @@ class LoansController extends Controller
      */
     public function update(LoanRequest $request, Loan $loan)
     {
-        $loan->fill($request->all())->save();
-        Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
+        try {
+
+            $loan->fill($request->all())->save();
+            Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
+
+        } catch(\Exception $e) {
+
+            Log::error($e);
+            return response()->json(["message"=>[$e->getMessage()]]);
+
+        }
+
     }
 
     /**

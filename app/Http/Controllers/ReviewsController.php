@@ -60,8 +60,17 @@ class ReviewsController extends Controller
      */
     public function update(ReviewRequest $request, Review $reviews)
     {
-        $reviews->fill($request->all())->save();
-        Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
+        try {
+
+            $reviews->fill($request->all())->save();
+            Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
+
+        }  catch(\Exception $e) {
+
+            Log::error($e);
+            return response()->json(["message"=>[$e->getMessage()]]);
+
+        }
     }
 
     /**

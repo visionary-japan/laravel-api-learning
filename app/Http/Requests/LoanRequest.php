@@ -22,10 +22,10 @@ class LoanRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => 'required',
-            'user_id' => 'required',
-            'loan_date' => 'required',
-            'due_date' => 'required',
+            'book_id' => 'required|integer',
+            'user_id' => 'required|integer',
+            'loan_date' => 'required|date',
+            'due_date' => 'required|date',
         ];
     }
 
@@ -46,6 +46,10 @@ class LoanRequest extends FormRequest
             'user_id.required' => ':attributeは必須項目です',
             'loan_date.required' => ':attributeは必須項目です',
             'due_date.required' => ':attributeは必須項目です',
+            'book_id.integer' => ':attributeは数字で入力してください',
+            'user_id.integer' => ':attributeは数字で入力してください',
+            'loan_date.date' => ':attributeは日付を入力してください',
+            'due_date.date' => ':attributeは日付を入力してください',
         ];
     }
 }

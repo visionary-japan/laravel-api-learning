@@ -61,8 +61,18 @@ class BookController extends Controller
      */
     public function update(UpdateRequest $request, Book $book)
     {
-        $book->fill($request->all())->save();
-        Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
+        try {
+
+            $book->fill($request->all())->save();
+            Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
+
+        } catch(\Exception $e) {
+
+            Log::error($e);
+            return response()->json(["message"=>[$e->getMessage()]]);
+
+        }
+
     }
 
     /**

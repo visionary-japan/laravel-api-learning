@@ -23,7 +23,7 @@ class UserRequest extends FormRequest
     {
         return [
             'user_name' => 'required|max:255',
-            'email' => 'max:255',
+            'email' => 'max:255|email:filter',
         ];
     }
 
@@ -41,6 +41,7 @@ class UserRequest extends FormRequest
             'user_name.required' => ':attributeは必須項目です',
             'user_name.max' => ':attributeは255文字以内で入力してください',
             'email.max' => ':attributeは255文字以内で入力してください',
+            'email.email' => ':attributeは正しいメールアドレスの形式で入力してください',
         ];
     }
 }

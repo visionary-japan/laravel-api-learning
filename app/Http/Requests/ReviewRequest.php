@@ -22,10 +22,9 @@ class ReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_id' => 'required',
-            'user_id' => 'required',
+            'book_id' => 'required|integer',
+            'user_id' => 'required|integer',
             'rating' => 'required|integer|between:1,5',
-            'comment' => 'nullable',
         ];
     }
 
@@ -35,7 +34,6 @@ class ReviewRequest extends FormRequest
             'book_id' => '本ID',
             'user_id' => 'ユーザーID',
             'rating' => '評価',
-            'comment' => 'コメント',
         ];
     }
 
@@ -43,7 +41,9 @@ class ReviewRequest extends FormRequest
     {
         return [
             'book_id.required' => ':attributeは必須項目です',
+            'book_id.integer' => ':attributeは数字で入力してください',
             'user_id.required' => ':attributeは必須項目です',
+            'user_id.integer' => ':attributeは数字で入力してください',
             'rating.required' => ':attributeは必須項目です',
             'rating.between' => ':attributeは数字で:min以上:max以下にしてください。',
         ];
