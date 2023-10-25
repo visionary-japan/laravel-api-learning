@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Http\Requests\StoreRequest;
 use App\Http\Requests\UpdateRequest;
+use App\Scopes\ScopeBook;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 
 class BookController extends Controller
@@ -17,8 +19,9 @@ class BookController extends Controller
      */
     public function index()
     {
-        $bookList = Book::all();
-        return response()->json($bookList, 200);
+        $publishedDate = Carbon::today();
+        $book = ScopeBook::BookList($publishedDate)->get();
+        return response()->json($book, 200);
     }
 
     /**
