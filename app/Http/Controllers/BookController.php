@@ -26,7 +26,8 @@ class BookController extends Controller
      */
     public function indexForAdmin()
     {
-        $bookList = Book::all();
+        // すべてのグローバルスコープを削除
+        $bookList = Book::withoutGlobalScopes()->get();
         return response()->json($bookList, 200);
     }
 

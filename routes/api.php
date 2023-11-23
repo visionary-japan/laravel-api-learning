@@ -34,6 +34,8 @@ Route::resource('book', BookController::class)->except([
     'create', 'edit'
 ]);
 
+Route::get('/indexForAdmin', [BookController::class, 'indexForAdmin']);
+
 Route::resource('loan', LoansController::class)->except([
     'create', 'edit'
 ]);

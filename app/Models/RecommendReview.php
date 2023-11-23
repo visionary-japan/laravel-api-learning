@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Book;
 
-class Review extends Model
+class RecommendReview extends Model
 {
     use HasFactory;
 
@@ -17,7 +17,6 @@ class Review extends Model
         'user_id',
         'rating',
         'comment',
-        'book_id',
     ];
 
     public function users(): belongsTo
@@ -28,19 +27,6 @@ class Review extends Model
     public function books(): belongsTo
     {
         return $this->belongsTo('Book');
-    }
-
-    protected static function booted()
-    {
-        static::created(function (Review $reviews) {
-            $recommend_reviews = new RecommendReview();
-            if( $reviews->rating == 5){
-                $recommend_reviews->book_id = $reviews->book_id;
-                $recommend_reviews->rating = $reviews->rating;
-                $recommend_reviews->comment = $reviews->comment;
-                $recommend_reviews->save();
-            }
-        });
     }
 
 }
