@@ -33,8 +33,8 @@ class Review extends Model
     protected static function booted()
     {
         static::created(function (Review $reviews) {
-            $recommend_reviews = new RecommendReview();
             if( $reviews->rating == 5){
+                $recommend_reviews = new RecommendReview();
                 $recommend_reviews->book_id = $reviews->book_id;
                 $recommend_reviews->rating = $reviews->rating;
                 $recommend_reviews->comment = $reviews->comment;
