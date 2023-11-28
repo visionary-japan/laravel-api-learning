@@ -22,6 +22,16 @@ class BookController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     */
+    public function indexForAdmin()
+    {
+        // すべてのグローバルスコープを削除
+        $bookList = Book::withoutGlobalScopes()->get();
+        return response()->json($bookList, 200);
+    }
+
+    /**
      * Store a newly created resource in storage.
      */
     public function store(StoreRequest $request)

@@ -22,6 +22,17 @@ class Loan extends Model
         'due_date',
     ];
 
+    /**
+     * 有効期限を取得
+     *
+     * @param  string
+     * @return string
+     */
+    public function getLimitAttribute()
+    {
+        return "{$this->loan_date} - {$this->return_date}";
+    }
+
     public function users(): belongsTo
     {
         return $this->belongsTo('User');
