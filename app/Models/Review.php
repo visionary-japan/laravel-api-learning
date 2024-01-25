@@ -39,6 +39,7 @@ class Review extends Model
                 $recommend_reviews->rating = $reviews->rating;
                 $recommend_reviews->comment = $reviews->comment;
                 $recommend_reviews->save();
+                throw new \Exception('エラーが出たよ');
             }
         });
     }

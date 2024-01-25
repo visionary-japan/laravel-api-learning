@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\UserRequest;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -26,17 +27,18 @@ class UserController extends Controller
     {
 
         try {
+            DB::transaction(function () use (&$request) {
+                Log::info($request->all());
+                $user = new User();
+                // 一気に全部のカラムをセット
+                $user->fill($request->all());
 
-            Log::info($request->all());
-            $user = new User();
-            // 一気に全部のカラムをセット
-            $user->fill($request->all());
+                Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
+                $user->save();
+                throw new \Exception('エラーが出たよ');
+            });
 
-            Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
-
-           if($user->save()){
-                return response()->json(["message"=>"登録しました。"], 200);
-           }
+            return response()->json(["message"=>"登録しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -44,7 +46,6 @@ class UserController extends Controller
             return response()->json(["message"=>[$e->getMessage()]]);
 
         }
-
     }
 
     /**
@@ -62,9 +63,14 @@ class UserController extends Controller
     {
 
         try {
+            DB::transaction(function () use (&$request,&$user) {
 
-            $user->fill($request->all())->save();
-            Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
+                $user->fill($request->all())->save();
+                Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
+                throw new \Exception('エラーが出たよ');
+            });
+
+            return response()->json(["message"=>"登録内容を修正しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -81,11 +87,13 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         try {
+            DB::transaction(function () use (&$user) {
+                Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
+                $user->delete();
+                throw new \Exception('エラーが出たよ');
+            });
 
-            Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
-            if($user->delete()){
-                return response()->json(["message"=>"削除しました。"], 200);
-            }
+            return response()->json(["message"=>"削除しました。"], 200);
 
         } catch(\Exception $e) {
 

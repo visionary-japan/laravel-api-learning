@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateRequest;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
@@ -38,24 +38,21 @@ class BookController extends Controller
     {
 
         try {
-            Log::info($request->all());
-            $book = new Book();
-            // 一気に全部のカラムをセット
-            $book->fill($request->all());
+            DB::transaction(function () use (&$request) {
+                Log::info($request->all());
+                $book = new Book();
+                // 一気に全部のカラムをセット
+                $book->fill($request->all());
 
-            Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
-
-           if($book->save()){
-                return response()->json(["message"=>"登録しました。"], 200);
-           }
-
+                Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
+                $book->save();
+                // throw new \Exception('エラーが出たよ');
+            });
+            return response()->json(["message"=>"登録しました。"], 200);
         } catch(\Exception $e) {
-
             Log::error($e);
             return response()->json(["message"=>[$e->getMessage()]]);
-
         }
-
     }
 
     /**
@@ -72,9 +69,13 @@ class BookController extends Controller
     public function update(UpdateRequest $request, Book $book)
     {
         try {
+            DB::transaction(function () use (&$request,&$book) {
+                $book->fill($request->all())->save();
+                Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
+                throw new \Exception('エラーが出たよ');
+            });
 
-            $book->fill($request->all())->save();
-            Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
+            return response()->json(["message"=>"登録内容を修正しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -82,7 +83,6 @@ class BookController extends Controller
             return response()->json(["message"=>[$e->getMessage()]]);
 
         }
-
     }
 
     /**
@@ -91,11 +91,13 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         try {
+            DB::transaction(function () use (&$book) {
+                Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
+                $book->delete();
+                throw new \Exception('エラーが出たよ');
+            });
 
-            Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
-            if($book->delete()){
-                return response()->json(["message"=>"削除しました。"], 200);
-            }
+            return response()->json(["message"=>"削除しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -103,6 +105,5 @@ class BookController extends Controller
             return response()->json(["message"=>[$e->getMessage()]]);
 
         }
-
     }
 }
