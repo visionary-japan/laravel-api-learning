@@ -72,7 +72,7 @@ class BookController extends Controller
             DB::transaction(function () use (&$request,&$book) {
                 $book->fill($request->all())->save();
                 Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"登録内容を修正しました。"], 200);
@@ -94,7 +94,7 @@ class BookController extends Controller
             DB::transaction(function () use (&$book) {
                 Log::info(json_encode($book, JSON_UNESCAPED_UNICODE));
                 $book->delete();
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"削除しました。"], 200);

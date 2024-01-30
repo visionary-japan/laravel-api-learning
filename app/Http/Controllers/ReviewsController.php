@@ -65,7 +65,7 @@ class ReviewsController extends Controller
             DB::transaction(function () use (&$request,&$reviews) {
                 $reviews->fill($request->all())->save();
                 Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"登録内容を修正しました。"], 200);
@@ -88,7 +88,7 @@ class ReviewsController extends Controller
 
                 Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
                 $reviews->delete();
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"削除しました。"], 200);

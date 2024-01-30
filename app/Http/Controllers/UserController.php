@@ -35,7 +35,7 @@ class UserController extends Controller
 
                 Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
                 $user->save();
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"登録しました。"], 200);
@@ -67,7 +67,7 @@ class UserController extends Controller
 
                 $user->fill($request->all())->save();
                 Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"登録内容を修正しました。"], 200);
@@ -90,7 +90,7 @@ class UserController extends Controller
             DB::transaction(function () use (&$user) {
                 Log::info(json_encode($user, JSON_UNESCAPED_UNICODE));
                 $user->delete();
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"削除しました。"], 200);

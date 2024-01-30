@@ -35,7 +35,7 @@ class LoansController extends Controller
 
                 Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
                 $loan->save();
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"登録しました。"], 200);
@@ -65,7 +65,7 @@ class LoansController extends Controller
             DB::transaction(function () use (&$request,&$loan) {
                 $loan->fill($request->all())->save();
                 Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"登録内容を修正しました。"], 200);
@@ -88,7 +88,7 @@ class LoansController extends Controller
             DB::transaction(function () use (&$loan) {
                 Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
                 $loan->delete();
-                throw new \Exception('エラーが出たよ');
+                // throw new \Exception('エラーが出たよ');
             });
 
             return response()->json(["message"=>"削除しました。"], 200);
