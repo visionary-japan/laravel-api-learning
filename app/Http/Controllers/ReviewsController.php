@@ -5,8 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use App\Http\Requests\ReviewRequest;
-use Exception;
+use Exceptions;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class ReviewsController extends Controller
 {
@@ -26,17 +27,18 @@ class ReviewsController extends Controller
     {
 
         try {
+            DB::transaction(function () use (&$request) {
+                Log::info($request->all());
+                $review = new Review();
+                // 一気に全部のカラムをセット
+                $review->fill($request->all());
 
-            Log::info($request->all());
-            $review = new Review();
-            // 一気に全部のカラムをセット
-            $review->fill($request->all());
+                Log::info(json_encode($review, JSON_UNESCAPED_UNICODE));
+               $review->save();
+            //    throw new \Exception('エラーが出たよ');
+            });
 
-            Log::info(json_encode($review, JSON_UNESCAPED_UNICODE));
-
-           if($review->save()){
-                return response()->json(["message"=>"登録しました。"], 200);
-           }
+            return response()->json(["message"=>"登録しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -44,7 +46,6 @@ class ReviewsController extends Controller
             return response()->json(["message"=>[$e->getMessage()]]);
 
         }
-
     }
 
     /**
@@ -61,9 +62,13 @@ class ReviewsController extends Controller
     public function update(ReviewRequest $request, Review $reviews)
     {
         try {
+            DB::transaction(function () use (&$request,&$reviews) {
+                $reviews->fill($request->all())->save();
+                Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
+                // throw new \Exception('エラーが出たよ');
+            });
 
-            $reviews->fill($request->all())->save();
-            Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
+            return response()->json(["message"=>"登録内容を修正しました。"], 200);
 
         }  catch(\Exception $e) {
 
@@ -79,11 +84,14 @@ class ReviewsController extends Controller
     public function destroy(Review $reviews)
     {
         try {
+            DB::transaction(function () use (&$reviews) {
 
-            Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
-            if($reviews->delete()){
-                return response()->json(["message"=>"削除しました。"], 200);
-            }
+                Log::info(json_encode($reviews, JSON_UNESCAPED_UNICODE));
+                $reviews->delete();
+                // throw new \Exception('エラーが出たよ');
+            });
+
+            return response()->json(["message"=>"削除しました。"], 200);
 
         } catch(\Exception $e) {
 

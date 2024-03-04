@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoanRequest;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class LoansController extends Controller
 {
@@ -26,17 +27,18 @@ class LoansController extends Controller
     {
 
         try {
+            DB::transaction(function () use (&$request) {
+                Log::info($request->all());
+                $loan = new Loan();
+                // 一気に全部のカラムをセット
+                $loan->fill($request->all());
 
-            Log::info($request->all());
-            $loan = new Loan();
-            // 一気に全部のカラムをセット
-            $loan->fill($request->all());
+                Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
+                $loan->save();
+                // throw new \Exception('エラーが出たよ');
+            });
 
-            Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
-
-           if($loan->save()){
-                return response()->json(["message"=>"登録しました。"], 200);
-           }
+            return response()->json(["message"=>"登録しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -44,7 +46,6 @@ class LoansController extends Controller
             return response()->json(["message"=>[$e->getMessage()]]);
 
         }
-
     }
 
     /**
@@ -61,9 +62,13 @@ class LoansController extends Controller
     public function update(LoanRequest $request, Loan $loan)
     {
         try {
+            DB::transaction(function () use (&$request,&$loan) {
+                $loan->fill($request->all())->save();
+                Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
+                // throw new \Exception('エラーが出たよ');
+            });
 
-            $loan->fill($request->all())->save();
-            Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
+            return response()->json(["message"=>"登録内容を修正しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -80,11 +85,13 @@ class LoansController extends Controller
     public function destroy(Loan $loan)
     {
         try {
+            DB::transaction(function () use (&$loan) {
+                Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
+                $loan->delete();
+                // throw new \Exception('エラーが出たよ');
+            });
 
-            Log::info(json_encode($loan, JSON_UNESCAPED_UNICODE));
-            if($loan->delete()){
-                return response()->json(["message"=>"削除しました。"], 200);
-            }
+            return response()->json(["message"=>"削除しました。"], 200);
 
         } catch(\Exception $e) {
 
@@ -92,6 +99,5 @@ class LoansController extends Controller
             return response()->json(["message"=>[$e->getMessage()]]);
 
         }
-
     }
 }
